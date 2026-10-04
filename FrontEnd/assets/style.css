@@ -416,3 +416,93 @@ a:hover {
 .portfolio-title img {
   padding-right: 5px;
 }
+.portfolio-title p:hover {
+  cursor: pointer;
+}
+/**** modale *****/
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.cache {
+  display: none;
+}
+
+.fermer-modale {
+  position: absolute;
+  top: 35px;
+  right: 35px;
+  background-color: transparent;
+  border-style: none;
+}
+.modale {
+  position: relative;
+  width: 630px;
+  min-height: 688px;
+  height: auto;
+  border-radius: 10px;
+  background-color: white;
+  /*border-bottom: 1px solid gray;*/
+}
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+
+  margin: 0 105px;
+  gap: 30px 10px;
+  padding-bottom: 65px;
+  border-bottom: 1px solid #ccc;
+}
+
+.photo > img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.photo button img {
+  width: 17px;
+  height: 17px;
+}
+.photo {
+  position: relative;
+}
+
+.photo button {
+  position: absolute;
+  top: 4px;
+  right: 1.5px;
+  background-color: transparent;
+  border-style: none;
+}
+
+.modale h2 {
+  margin-top: 60px;
+  margin-bottom: 45px;
+  color: black;
+  font-weight: 400;
+  text-align: center;
+  font-family: "Work Sans";
+}
+.ajouter-photo {
+  border: solid 1px #1d6154;
+  background-color: #1d6154;
+
+  border-radius: 22px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 49px;
+  font-family: "Syne";
+  cursor: pointer;
+  display: flex;
+  margin: 35px auto 0;
+}
+.modale2 {
+}

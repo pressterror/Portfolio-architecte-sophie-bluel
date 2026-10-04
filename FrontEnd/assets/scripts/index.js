@@ -39,6 +39,9 @@ async function chargerTraveaux() {
 chargerTraveaux();
 ///////////// creation filtre Traveaux
 async function chargerFiltre() {
+  if (sessionStorage.getItem("token")) {
+    return;
+  }
   let listeBtn;
   const Tous = {
     id: "",
@@ -48,6 +51,7 @@ async function chargerFiltre() {
   bouton.textContent = "Tous";
   bouton.classList.add("selected");
   filter.appendChild(bouton);
+
   if (localStorage.getItem("filtreBouton") === null) {
     const btnGenerer = await fetch("http://localhost:5678/api/categories");
     listeBtn = await btnGenerer.json();
