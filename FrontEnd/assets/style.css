@@ -439,6 +439,7 @@ a:hover {
   right: 35px;
   background-color: transparent;
   border-style: none;
+  cursor: pointer;
 }
 .modale {
   position: relative;
@@ -465,7 +466,9 @@ a:hover {
   aspect-ratio: 3 / 4;
   object-fit: cover;
 }
-
+.photo button {
+  cursor: pointer;
+}
 .photo button img {
   width: 17px;
   height: 17px;
@@ -493,16 +496,133 @@ a:hover {
 .ajouter-photo {
   border: solid 1px #1d6154;
   background-color: #1d6154;
-
-  border-radius: 22px;
   color: white;
+  border-radius: 22px;
+  font-family: "Syne";
   font-size: 14px;
   font-weight: 700;
   padding: 10px 49px;
-  font-family: "Syne";
   cursor: pointer;
+
   display: flex;
   margin: 35px auto 0;
 }
+/**** modale2 ****/
 .modale2 {
+  position: relative;
+  width: 630px;
+  min-height: 665px;
+  height: auto;
+  border-radius: 10px;
+  background-color: white;
+}
+.modale2 form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 105px;
+}
+.retour-modale {
+  position: absolute;
+  top: 35px;
+  left: 35px;
+  background-color: transparent;
+  border-style: none;
+  cursor: pointer;
+}
+.modale2 form #photo {
+  width: 100%;
+  height: 170px;
+  margin-bottom: 30px;
+}
+.modale2 form label {
+  font-family: "Work Sans";
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.modale2 form input,
+.modale2 form select {
+  border-style: none;
+  background-color: white;
+  box-shadow: 0px 4px 14px 0px #00000020;
+  height: 50px;
+}
+.modale2 form input[type="file"] {
+  display: none;
+}
+.modale2 input {
+  margin-bottom: 21px;
+}
+.zone-image {
+  display: flex;
+  flex-direction: column;
+  background-color: #e8f1f6;
+  justify-content: center;
+  align-items: center;
+  height: 170px;
+  margin-bottom: 30px;
+}
+.zone-image p {
+  font-size: 10px;
+  font-weight: 400;
+  font-family: "Work Sans";
+  gap: 7px;
+}
+.zone-image button {
+  height: 36px;
+  width: 173px;
+  color: white;
+  background-color: #cbd6dc;
+  color: #306685;
+  border-style: none;
+  border-radius: 50px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: "Work Sans";
+  font-size: 14px;
+}
+.zone-image img {
+  width: 76px;
+  height: 76px;
+  margin-bottom: 6px;
+}
+.zone-image .preview {
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+}
+.separation {
+  border-bottom: 1px solid grey;
+  padding: 20px 0 32px 0;
+}
+.disabled[type="submit"] {
+  height: 36px;
+  width: 237px;
+  color: white;
+  background-color: #a7a7a7;
+  font-weight: 700;
+  border-style: none;
+  margin-top: 35px;
+  font-family: "Syne";
+}
+.activated[type="submit"] {
+  border: solid 1px #1d6154;
+  background-color: #1d6154;
+  color: white;
+  font-family: "Syne";
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.modale2 h2 {
+  color: black;
+  font-weight: 400;
+  text-align: center;
+  font-family: "Work Sans";
+  margin-top: 60px;
+  margin-bottom: 30px;
+  font-size: 26px;
 }
