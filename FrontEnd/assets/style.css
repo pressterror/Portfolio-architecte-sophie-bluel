@@ -107,6 +107,7 @@ section {
 }
 body {
   line-height: 1;
+  background-color: #fffef8;
 }
 ol,
 ul {
@@ -139,8 +140,11 @@ header {
   justify-content: space-between;
   margin: 50px 0;
 }
+header nav {
+  margin-right: 50px;
+}
 section {
-  margin: 50px 0;
+  margin: 140px 0;
 }
 
 h1 {
@@ -170,7 +174,7 @@ nav ul {
   list-style-type: none;
 }
 nav li {
-  padding: 0 10px;
+  padding: 0 22px;
   font-size: 1.2em;
   row-gap: 44px;
 }
@@ -260,8 +264,9 @@ button[type="submit"] {
   font-weight: 700;
   color: white;
   background-color: #1d6154;
-  margin: 2em auto;
+  margin: 3em auto;
   width: 180px;
+  height: 36px;
   text-align: center;
   border-radius: 60px;
 }
@@ -270,6 +275,8 @@ footer nav ul {
   display: flex;
   justify-content: flex-end;
   margin: 2em;
+  background-color: white;
+  width: 100%;
 }
 /***************AJOUT*******************/
 /******* filtre*******/
@@ -278,7 +285,7 @@ footer nav ul {
   flex-direction: row;
   justify-content: center;
   gap: 20px;
-  padding-bottom: 40px;
+  padding-bottom: 50px;
   padding-top: 15px;
 }
 .filters button {
@@ -615,6 +622,7 @@ a:hover {
   font-family: "Syne";
   font-size: 14px;
   font-weight: 700;
+  width: 237px;
   cursor: pointer;
 }
 .modale2 h2 {

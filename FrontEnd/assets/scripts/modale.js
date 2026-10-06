@@ -108,6 +108,12 @@ async function affichermodale2() {
   croixImage.src = "assets/icons/X.svg";
   croixImage.alt = "fermer";
   croix.appendChild(croixImage); //
+  croix.addEventListener("click", () => {
+    modale.innerHTML = "";
+    overlay.classList.add("cache");
+    modale.classList.remove("modale2");
+    modale.classList.add("modale");
+  });
   const titre2 = document.createElement("h2"); //titre
   titre2.textContent = "Ajout photo";
   modale.appendChild(titre2);
@@ -218,11 +224,52 @@ async function affichermodale2() {
   erreur.textContent = "Veuillez compléter tous les champs.";
   erreur.style.color = "red";
   erreur.style.textAlign = "center";
-  ajoutForm.addEventListener("submit", (event) => {
+  ajoutForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    if (ajoutForm.checkValidity() !== true) {
+    if (!ajoutForm.checkValidity()) {
       ajoutForm.appendChild(erreur);
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("image", ajoutPhoto.files[0]);
+    formData.append("title", titreInput.value);
+    formData.append("category", categorieSelect.value);
+
+    const reponse = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (reponse.status === 201) {
+      const nouveauTravaux = await reponse.json();
+
+      listTraveaux.push(nouveauTravaux);
+      afficherTraveaux(listTraveaux);
+
+      erreur.textContent = "Ajout du travail confirmé";
+      erreur.style.color = "green";
+      ajoutForm.appendChild(erreur);
+
+      ajoutForm.reset();
+
+      const preview = zoneImage.querySelector(".preview");
+
+      if (preview) {
+        preview.remove();
+      }
+
+      zoneImage.appendChild(iconePhoto);
+      zoneImage.appendChild(ajoutBtn);
+      zoneImage.appendChild(infoPhoto);
+
+      validerform.classList.remove("activated");
+      validerform.classList.add("disabled");
     }
   });
   ajoutForm.addEventListener("input", () => {

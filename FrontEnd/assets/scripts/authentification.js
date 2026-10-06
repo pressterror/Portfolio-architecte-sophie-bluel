@@ -29,6 +29,12 @@ if (token) {
 
   portfolioTitle.appendChild(img2);
   portfolioTitle.appendChild(modifier);
-} else {
-  console.log("Utilisateur déconnecté");
 }
+lienConnexion.addEventListener("click", (e) => {
+  if (token !== null) {
+    e.preventDefault();
+    sessionStorage.removeItem("token");
+    lienConnexion.textContent = "login";
+    window.location.reload();
+  }
+});
