@@ -78,6 +78,10 @@ chargerFiltre();
 filter.addEventListener("click", (event) => {
   const ancienActif = filter.querySelector(".selected");
   const nouvelActif = event.target;
+  const bouton = event.target.closest("button");
+  if (!bouton) {
+    return;
+  }
 
   if (ancienActif === nouvelActif) {
     return;

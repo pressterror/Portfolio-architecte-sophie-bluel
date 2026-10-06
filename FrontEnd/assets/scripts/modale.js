@@ -89,13 +89,38 @@ overlay.addEventListener("click", (event) => {
   if (event.target === overlay) {
     modale.innerHTML = "";
     overlay.classList.add("cache");
+    modale.classList.add("modale");
+    modale.classList.remove("modale2");
   }
 });
 /***************** MODALE 2 ******************/
 async function affichermodale2() {
   // recuperation des categorie depuis l'api
-  const reponseCategories = await fetch("http://localhost:5678/api/categories");
-  const listCategories = await reponseCategories.json();
+  let listCategories;
+
+  try {
+    // récupération des catégories depuis l'API
+    const reponseCategories = await fetch(
+      "http://localhost:5678/api/categories",
+    );
+
+    if (!reponseCategories.ok) {
+      throw new Error("Impossible de récupérer les catégories");
+    }
+
+    listCategories = await reponseCategories.json();
+  } catch (erreur) {
+    console.error(erreur);
+
+    const messageErreur = document.createElement("p");
+    messageErreur.textContent = "Impossible de charger les catégories.";
+    messageErreur.style.color = "red";
+    messageErreur.style.textAlign = "center";
+
+    modale.appendChild(messageErreur);
+
+    return;
+  }
   //
   const retour = document.createElement("button"); //bouton
   retour.type = "button";
@@ -135,6 +160,7 @@ async function affichermodale2() {
   ajoutPhoto.type = "file";
   ajoutPhoto.name = "photo";
   ajoutPhoto.id = "photo";
+  ajoutPhoto.required = true;
   zoneImage.appendChild(ajoutPhoto);
   const iconePhoto = document.createElement("img");
   iconePhoto.src = "./assets/icons/form_img.svg";
@@ -157,12 +183,14 @@ async function affichermodale2() {
       const erreur = document.createElement("p");
       erreur.textContent = "Format d'image non valide";
       erreur.style.color = "red";
+      ajoutPhoto.value = "";
       zoneImage.appendChild(erreur);
     } else if (fichier.size > tailleMax) {
       // virification de la taille
       const erreur = document.createElement("p");
       erreur.textContent = "Le fichier est trop volumineux";
       erreur.style.color = "red";
+      ajoutPhoto.value = "";
       zoneImage.appendChild(erreur);
     } else {
       //affichage previsualiation
@@ -286,6 +314,8 @@ async function affichermodale2() {
 
       validerform.classList.remove("activated");
       validerform.classList.add("disabled");
+    } else {
+      alert("une erreur est survenue");
     }
   });
   // enlever le message erreur/validation

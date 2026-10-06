@@ -58,8 +58,10 @@ form.addEventListener("submit", async (event) => {
       messageErreurConnexion.textContent = "E-mail ou mot de passe invalide.";
       password.value = "";
       return;
+    } else if (envoie.status === 400 || envoie.status === 403) {
+      alert("La connexion n'a pas pu être effectuée.");
+      return;
     } else if (envoie.status >= 500) {
-      //en cas de probleme serveur
       alert("Le serveur rencontre un problème.");
       return;
     }
