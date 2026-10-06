@@ -4,7 +4,7 @@ const filter = document.querySelector(".filters");
 /////////// variable global
 let listTraveaux = [];
 
-//////////// creation du portfolio
+//////////// afficher les traveaux
 function afficherTraveaux(liste) {
   galerieTraveaux.innerHTML = "";
   for (const traveaux of liste) {
@@ -19,10 +19,9 @@ function afficherTraveaux(liste) {
     cardTraveaux.appendChild(traveauxImg);
     cardTraveaux.appendChild(traveauxTitle);
     galerieTraveaux.appendChild(cardTraveaux);
-    //sauvegarderTraveaux("", listTraveaux);
   }
 }
-
+// recuperation traveaux
 async function chargerTraveaux() {
   if (localStorage.getItem("traveaux") === null) {
     const dataTraveaux = await fetch("http://localhost:5678/api/works");
@@ -35,7 +34,6 @@ async function chargerTraveaux() {
 
   afficherTraveaux(listTraveaux);
 }
-
 chargerTraveaux();
 ///////////// creation filtre Traveaux
 async function chargerFiltre() {
@@ -47,11 +45,11 @@ async function chargerFiltre() {
     id: "",
     name: "Tous",
   };
-  const bouton = document.createElement("button");
+  const bouton = document.createElement("button"); // bouton pour afficher tous les traveau
   bouton.textContent = "Tous";
   bouton.classList.add("selected");
   filter.appendChild(bouton);
-
+  // recuperation des bouton api
   if (localStorage.getItem("filtreBouton") === null) {
     const btnGenerer = await fetch("http://localhost:5678/api/categories");
     listeBtn = await btnGenerer.json();
@@ -59,8 +57,9 @@ async function chargerFiltre() {
       tous: Tous,
       categories: listeBtn,
     };
-    localStorage.setItem("filtreBouton", JSON.stringify(filtre));
+    localStorage.setItem("filtreBouton", JSON.stringify(filtre)); //sauvegarde bouton
   } else {
+    // si deja recuperer depuis l'api afficher le localstorage
     const filtre = JSON.parse(localStorage.getItem("filtreBouton"));
     listeBtn = filtre.categories;
   }
@@ -89,9 +88,10 @@ filter.addEventListener("click", (event) => {
 
   const id = event.target.id;
 
-  localStorage.setItem("filters", id);
+  localStorage.setItem("filters", id); // sauvegarde du filtre actif
 
   if (id === "") {
+    // affichage de "Tous"
     afficherTraveaux(listTraveaux);
   } else {
     const travauxFiltres = listTraveaux.filter(
@@ -103,6 +103,7 @@ filter.addEventListener("click", (event) => {
 });
 //////////// SAUVEGARDE filtre actif
 function restaurerFiltre() {
+  //verifie qu'un filtre est appliquer
   const filtreSauvegarde = localStorage.getItem("filters");
 
   if (filtreSauvegarde === null || filtreSauvegarde === "") {

@@ -1,3 +1,4 @@
+//  DOM
 const form = document.querySelector("form");
 const email = document.querySelector("#email");
 const password = document.querySelector("#password");
@@ -6,13 +7,13 @@ const messageErreurConnexion = document.querySelector(
 );
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  console.log("SUBMIT DÉCLENCHÉ");
   let valid = true;
 
   for (const input of [email, password]) {
-    input.setCustomValidity("");
+    input.setCustomValidity(""); // verification des champs personaliser
 
     if (input === email) {
+      // message email vide ou non conforme
       if (email.validity.valueMissing) {
         email.setCustomValidity("Veuillez renseigner votre adresse e-mail.");
       } else if (email.validity.patternMismatch) {
@@ -27,20 +28,21 @@ form.addEventListener("submit", async (event) => {
     }
 
     if (!input.checkValidity()) {
+      // arrete la verfication a la 1er erreur
       valid = false;
       input.reportValidity();
       break;
     }
   }
-  console.log("valid =", valid);
   if (valid) {
-    console.log("Format des champs valide");
+    // apres verification des champ
     const emailUtilisateur = email.value;
     const passwordUtilisateur = password.value;
     const identifiant = {
       email: emailUtilisateur,
       password: passwordUtilisateur,
     };
+    // envoie de la requete
     const requeteConnection = JSON.stringify(identifiant);
     const envoie = await fetch("http://localhost:5678/api/users/login", {
       method: "POST",
@@ -50,24 +52,23 @@ form.addEventListener("submit", async (event) => {
       body: requeteConnection,
     });
     const reponse = await envoie.json();
-    console.log(reponse);
     if (envoie.status === 401 || envoie.status === 404) {
+      // en cas erreur identifiant
       messageErreurConnexion.classList.add("attention");
       messageErreurConnexion.textContent = "E-mail ou mot de passe invalide.";
       password.value = "";
       return;
-    } else if (envoie.status === 404) {
-      alert("Service de connexion introuvable.");
-      return;
     } else if (envoie.status >= 500) {
+      //en cas de probleme serveur
       alert("Le serveur rencontre un problème.");
       return;
     }
-    console.log("connexion reussi.");
+    // conection reussi recuperation token et redirection index
     sessionStorage.setItem("token", reponse.token);
     window.location.href = "index.html";
   }
 });
+// enleve le message erreur
 password.addEventListener("input", () => {
   messageErreurConnexion.textContent = "";
   messageErreurConnexion.classList.remove("attention");

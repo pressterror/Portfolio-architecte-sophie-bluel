@@ -25,6 +25,7 @@ function afficherModale() {
   ajouterPhoto.classList.add("ajouter-photo");
   modale.appendChild(ajouterPhoto);
   ajouterPhoto.addEventListener("click", () => {
+    //passage modale2 (form ajout photo)
     modale.innerHTML = "";
     modale.classList.remove("modale");
     modale.classList.add("modale2");
@@ -32,6 +33,7 @@ function afficherModale() {
   });
 
   for (const travaux of listTraveaux) {
+    //generation gallerie des traveaux disponible
     //generation galerie photro
     const cards = document.createElement("div");
     cards.classList.add("photo");
@@ -43,6 +45,7 @@ function afficherModale() {
     const icone = document.createElement("button");
     icone.type = "button";
     cards.appendChild(icone);
+    // suppression depuis la gallerie modale
     icone.addEventListener("click", async () => {
       // suppression traveaux
       const reponse = await fetch(
@@ -55,14 +58,13 @@ function afficherModale() {
         },
       );
 
-      console.log(reponse.status);
-
       if (reponse.ok) {
         listTraveaux = listTraveaux.filter(
+          //supression depuis l'index
           (element) => element.id !== travaux.id,
         );
-        cards.remove();
-        afficherTraveaux(listTraveaux);
+        cards.remove(); // suppression de la gallery modale
+        afficherTraveaux(listTraveaux); // rechargement traveaux index
       }
     });
     const supprimer = document.createElement("img");
@@ -71,17 +73,18 @@ function afficherModale() {
 
     galerie.appendChild(cards);
   }
+  // fermeture de la modale
   croix.addEventListener("click", () => {
     modale.innerHTML = "";
     overlay.classList.add("cache");
   });
 }
-// ouverture/fermeture et changement de modale
+// ouverture/fermeture  de modale
 modifier.addEventListener("click", () => {
   overlay.classList.remove("cache");
   afficherModale();
 });
-
+// clic a l'exterieur de la modale
 overlay.addEventListener("click", (event) => {
   if (event.target === overlay) {
     modale.innerHTML = "";
@@ -90,8 +93,10 @@ overlay.addEventListener("click", (event) => {
 });
 /***************** MODALE 2 ******************/
 async function affichermodale2() {
+  // recuperation des categorie depuis l'api
   const reponseCategories = await fetch("http://localhost:5678/api/categories");
   const listCategories = await reponseCategories.json();
+  //
   const retour = document.createElement("button"); //bouton
   retour.type = "button";
   retour.classList.add("retour-modale");
@@ -109,6 +114,7 @@ async function affichermodale2() {
   croixImage.alt = "fermer";
   croix.appendChild(croixImage); //
   croix.addEventListener("click", () => {
+    // fermeture modale
     modale.innerHTML = "";
     overlay.classList.add("cache");
     modale.classList.remove("modale2");
@@ -120,6 +126,7 @@ async function affichermodale2() {
   const ajoutForm = document.createElement("form"); //formulaire debut
   ajoutForm.classList.add("ajout-form");
   modale.appendChild(ajoutForm);
+  //creation de la zone import image
   const zoneImage = document.createElement("div");
   zoneImage.classList.add("zone-image");
   ajoutForm.appendChild(zoneImage);
@@ -129,7 +136,6 @@ async function affichermodale2() {
   ajoutPhoto.name = "photo";
   ajoutPhoto.id = "photo";
   zoneImage.appendChild(ajoutPhoto);
-
   const iconePhoto = document.createElement("img");
   iconePhoto.src = "./assets/icons/form_img.svg";
   iconePhoto.alt = "";
@@ -138,6 +144,8 @@ async function affichermodale2() {
   ajoutBtn.textContent = " + Ajouter photo";
   ajoutBtn.type = "button";
   zoneImage.appendChild(ajoutBtn);
+  //
+  // importer une image
   ajoutBtn.addEventListener("click", () => {
     ajoutPhoto.click();
   });
@@ -145,16 +153,19 @@ async function affichermodale2() {
     const fichier = ajoutPhoto.files[0];
     const tailleMax = 4 * 1024 * 1024;
     if (fichier.type !== "image/jpeg" && fichier.type !== "image/png") {
+      // verification du format
       const erreur = document.createElement("p");
       erreur.textContent = "Format d'image non valide";
       erreur.style.color = "red";
       zoneImage.appendChild(erreur);
     } else if (fichier.size > tailleMax) {
+      // virification de la taille
       const erreur = document.createElement("p");
       erreur.textContent = "Le fichier est trop volumineux";
       erreur.style.color = "red";
       zoneImage.appendChild(erreur);
     } else {
+      //affichage previsualiation
       const preview = document.createElement("img");
       preview.classList.add("preview");
       preview.src = URL.createObjectURL(fichier);
@@ -194,6 +205,7 @@ async function affichermodale2() {
   optionDefaut.disabled = true;
   optionDefaut.selected = true;
   categorieSelect.appendChild(optionDefaut);
+  // creation des categorie depuis la recuperation api
   for (const categorie of listCategories) {
     const option = document.createElement("option");
     option.value = categorie.id;
@@ -209,35 +221,39 @@ async function affichermodale2() {
   validerform.type = "submit";
   validerform.textContent = "Valider";
   ajoutForm.appendChild(validerform);
+  //verification des champs avant envoie de la requete
   function verifierFormulaire() {
     if (ajoutForm.checkValidity()) {
       validerform.classList.remove("disabled");
       validerform.classList.add("activated");
     } else {
+      // zone activation/deactivation bouton
       validerform.classList.remove("activated");
       validerform.classList.add("disabled");
     }
   }
-  ajoutForm.addEventListener("input", verifierFormulaire);
-  ajoutForm.addEventListener("change", verifierFormulaire);
-  const erreur = document.createElement("p");
+  ajoutForm.addEventListener("input", verifierFormulaire); // verifie le titre
+  ajoutForm.addEventListener("change", verifierFormulaire); // verifie la categorie
+  const erreur = document.createElement("p"); // message formulaire incomplet
   erreur.textContent = "Veuillez compléter tous les champs.";
   erreur.style.color = "red";
   erreur.style.textAlign = "center";
+  // envoie de la requete ajout photo
   ajoutForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     if (!ajoutForm.checkValidity()) {
+      // si form incomplet
       ajoutForm.appendChild(erreur);
       return;
     }
-
+    // creation de la requete
     const formData = new FormData();
 
     formData.append("image", ajoutPhoto.files[0]);
     formData.append("title", titreInput.value);
     formData.append("category", categorieSelect.value);
-
+    // envoie de la requete
     const reponse = await fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
@@ -245,17 +261,17 @@ async function affichermodale2() {
       },
       body: formData,
     });
-
+    //requete valider
     if (reponse.status === 201) {
       const nouveauTravaux = await reponse.json();
 
       listTraveaux.push(nouveauTravaux);
       afficherTraveaux(listTraveaux);
 
-      erreur.textContent = "Ajout du travail confirmé";
+      erreur.textContent = "Ajout du travail confirmé"; // message confirmation
       erreur.style.color = "green";
       ajoutForm.appendChild(erreur);
-
+      // remise a zero du formulaire
       ajoutForm.reset();
 
       const preview = zoneImage.querySelector(".preview");
@@ -272,6 +288,7 @@ async function affichermodale2() {
       validerform.classList.add("disabled");
     }
   });
+  // enlever le message erreur/validation
   ajoutForm.addEventListener("input", () => {
     erreur.remove();
   });
@@ -279,6 +296,7 @@ async function affichermodale2() {
   ajoutForm.addEventListener("change", () => {
     erreur.remove();
   });
+  // retour modale gallerie
   retour.addEventListener("click", () => {
     modale.innerHTML = "";
     modale.classList.remove("modale2");

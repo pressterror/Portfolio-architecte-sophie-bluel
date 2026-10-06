@@ -1,8 +1,8 @@
 const lienConnexion = document.querySelector('nav a[href*="login"]');
 const token = sessionStorage.getItem("token");
-//sophie.bluel@test.tld
 
 if (token) {
+  // si connecter generation des nouveau element mode 'admin connecter
   console.log("Utilisateur connecté");
   lienConnexion.textContent = "logout";
 
@@ -30,6 +30,7 @@ if (token) {
   portfolioTitle.appendChild(img2);
   portfolioTitle.appendChild(modifier);
 }
+// deconnection utilisateur
 lienConnexion.addEventListener("click", (e) => {
   if (token !== null) {
     e.preventDefault();
