@@ -64,6 +64,7 @@ function afficherModale() {
           (element) => element.id !== travaux.id,
         );
         cards.remove(); // suppression de la gallery modale
+        localStorage.setItem("traveaux", JSON.stringify(listTraveaux)); //
         afficherTraveaux(listTraveaux); // rechargement traveaux index
       }
     });
@@ -294,6 +295,7 @@ async function affichermodale2() {
       const nouveauTravaux = await reponse.json();
 
       listTraveaux.push(nouveauTravaux);
+      //localStorage.setItem("traveaux", JSON.stringify(listTraveaux));
       afficherTraveaux(listTraveaux);
 
       erreur.textContent = "Ajout du travail confirmé"; // message confirmation

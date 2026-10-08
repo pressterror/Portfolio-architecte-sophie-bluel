@@ -23,18 +23,11 @@ function afficherTraveaux(liste) {
 }
 // recuperation traveaux
 async function chargerTraveaux() {
-  if (localStorage.getItem("traveaux") === null) {
-    const dataTraveaux = await fetch("http://localhost:5678/api/works");
-    listTraveaux = await dataTraveaux.json();
-
-    localStorage.setItem("traveaux", JSON.stringify(listTraveaux));
-  } else {
-    listTraveaux = JSON.parse(localStorage.getItem("traveaux"));
-  }
+  const dataTraveaux = await fetch("http://localhost:5678/api/works");
+  listTraveaux = await dataTraveaux.json();
 
   afficherTraveaux(listTraveaux);
 }
-chargerTraveaux();
 ///////////// creation filtre Traveaux
 async function chargerFiltre() {
   if (sessionStorage.getItem("token")) {
@@ -72,7 +65,6 @@ async function chargerFiltre() {
   }
   restaurerFiltre();
 }
-chargerFiltre();
 /////////// affichage filtrer
 
 filter.addEventListener("click", (event) => {
@@ -99,7 +91,7 @@ filter.addEventListener("click", (event) => {
     afficherTraveaux(listTraveaux);
   } else {
     const travauxFiltres = listTraveaux.filter(
-      (traveaux) => Number(id) === traveaux.categoryId,
+      (traveaux) => Number(id) === Number(traveaux.categoryId),
     );
 
     afficherTraveaux(travauxFiltres);
@@ -107,7 +99,6 @@ filter.addEventListener("click", (event) => {
 });
 //////////// SAUVEGARDE filtre actif
 function restaurerFiltre() {
-  //verifie qu'un filtre est appliquer
   const filtreSauvegarde = localStorage.getItem("filters");
 
   if (filtreSauvegarde === null || filtreSauvegarde === "") {
@@ -122,8 +113,14 @@ function restaurerFiltre() {
   boutonSauvegarde.classList.add("selected");
 
   const travauxFiltres = listTraveaux.filter(
-    (traveaux) => Number(filtreSauvegarde) === traveaux.categoryId,
+    (traveaux) => Number(filtreSauvegarde) === Number(traveaux.categoryId),
   );
 
   afficherTraveaux(travauxFiltres);
 }
+async function initialiser() {
+  await chargerTraveaux();
+  await chargerFiltre();
+}
+
+initialiser();
